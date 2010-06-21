@@ -189,7 +189,11 @@ class DajaxiceRequest(object):
         """
         if self._is_callable():
             log.debug('Function %s is callable' % self.full_name)
-            callback = self.request.POST.get('callback')
+            #callback = self.request.POST.get('callback')
+            if self.request.POST.has_key('callback'):
+                 callback = self.request.POST.get('callback')
+            else:
+                callback = 'unspecified'
             
             argv = self.request.POST.get('argv')
             if argv != 'undefined':
@@ -207,7 +211,12 @@ class DajaxiceRequest(object):
             
             try:
                 thefunction = self._get_ajax_function()
-                response = '%s(%s)' % ( callback, thefunction(self.request, **argv) )
+                #response = '%s(%s)' % ( callback, thefunction(self.request, **argv) )
+		if self.request.POST.has_key('callback'):
+                    response = '%s(%s)' % ( callback, thefunction(self.request, **argv) )
+		else:
+                    response = '(%s)' % ( thefunction(self.request, **argv) )
+
             except Exception, e:
                 trace = '\n'.join(traceback.format_exception(*sys.exc_info()))
                 log.error(trace)

@@ -6,7 +6,7 @@ var Dajaxice = {
     call: function(dajaxice_function, dajaxice_callback, argv)
     {
         var send_data = [];
-        send_data.push('callback='+dajaxice_callback);
+        //send_data.push('callback='+dajaxice_callback);
         send_data.push('argv='+escape(JSON.stringify(argv)));
         send_data = send_data.join('&');
         var oXMLHttpRequest = new XMLHttpRequest;
@@ -14,7 +14,8 @@ var Dajaxice = {
         oXMLHttpRequest.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         oXMLHttpRequest.onreadystatechange = function() {
             if (this.readyState == XMLHttpRequest.DONE) {
-                eval(this.responseText);
+                //eval(this.responseText);
+		dajaxice_callback(eval(this.responseText));
             }
         }
         oXMLHttpRequest.send(send_data);
