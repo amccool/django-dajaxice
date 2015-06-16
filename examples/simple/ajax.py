@@ -1,23 +1,26 @@
-from django.utils import simplejson
-from dajaxice.core import dajaxice_functions
+import json
 
-def example1(request):
-    return simplejson.dumps({'message':'hello world'})
+from dajaxice.decorators import dajaxice_register
 
-dajaxice_functions.register(example1)
 
-def example2(request):
-    return simplejson.dumps({'numbers':[1,2,3]})
-    
-dajaxice_functions.register(example2)
+@dajaxice_register(method='GET')
+@dajaxice_register(method='POST', name='other_post')
+def hello(request):
+    return json.dumps({'message': 'hello'})
 
-def example3(request, data, name):
-    result = sum(map(int,data))
-    return simplejson.dumps({'result':result})
 
-dajaxice_functions.register(example3)
+@dajaxice_register(method='GET')
+@dajaxice_register(method='POST', name="more.complex.bye")
+def bye(request):
+    raise Exception("PUMMMM")
+    return json.dumps({'message': 'bye'})
 
-def error_example(request):
-    raise Exception("Some Exception")
-    
-dajaxice_functions.register(error_example)
+
+@dajaxice_register
+def lol(request):
+    return json.dumps({'message': 'lol'})
+
+
+@dajaxice_register(method='GET')
+def get_args(request, foo):
+    return json.dumps({'message': 'hello get args %s' % foo})

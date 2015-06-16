@@ -1,5 +1,9 @@
-from django.shortcuts import render_to_response
-from django.conf import settings
+# Create your views here.
+from django.shortcuts import render
 
-def simple_index(request):
-	return render_to_response('simple/simple_index.html')
+from dajaxice.core import dajaxice_functions
+
+
+def index(request):
+
+    return render(request, 'simple/index.html')
